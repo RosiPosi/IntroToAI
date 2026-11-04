@@ -55,17 +55,32 @@ class TicTacToe(AlphaBetaNode):
         Generates list of all possible states after this turn
         :return: list of TicTacToe objects
         """
-        # Implement me
+        if self.is_end_state():
+            return []
 
-        return []
+        children = []
+        mark = 'x' if self.crosses_turn else 'o'
+
+        for i, square in enumerate(self.state):
+            if square == '?':
+                new_state = (
+                    self.state[:i] + mark + self.state[i + 1:]
+                )
+
+                child = TicTacToe(new_state, not self.crosses_turn)
+                children.append(child)
+
+        return children
 
     def value(self):
         """
         Current score of the game (0, 1, -1)
         :return: int
         """
-        # Implement me
-
+        if self.won('x'):
+            return 1
+        if self.won('o'):
+            return -1
         return 0
 
 
@@ -75,16 +90,36 @@ def alpha_beta_value(node):
     :return: int
     """
 
-    # Implement me
+    if node.is_max_node():
+        return max_value(node, -1, 1)
+    return min_value(node, -1, 1)
 
 
 def max_value(node, alpha, beta):
-    # Implement me
+    if node.is_end_state(): 
+        return node.value()
+    v = -HUGE_NUMBER
 
-    return HUGE_NUMBER
+    for child in node.generate_children():
+        v = max(v, min_value(child, alpha, beta))
+        alpha = max(alpha, v)
+
+        if alpha >= beta:
+            return v
+
+    return v
 
 
 def min_value(node, alpha, beta):
-    # Implement me
+    if node.is_end_state(): 
+        return node.value()
+    v = HUGE_NUMBER
 
-    return +HUGE_NUMBER
+    for child in node.generate_children():
+        v = min(v, max_value(child, alpha, beta))
+        beta = min(beta, v)
+
+        if alpha >= beta:
+            return v
+
+    return v

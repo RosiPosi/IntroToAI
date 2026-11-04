@@ -6,7 +6,29 @@ def play(state):
     """Makes turn and prints the result of it until the game is over
     :param state: The initial state of the game (TicTacToe)
     """
-    # Implement me
+    while not state.is_end_state():
+        print(state)
+
+        children = state.generate_children()
+
+        # Choose the move that is best for the current player.
+        best_child = children[0]
+        best_value = alpha_beta_value(best_child)
+
+        for child in children[1:]:
+            child_value = alpha_beta_value(child)
+
+            if state.is_max_node() and child_value > best_value:
+                best_child = child
+                best_value = child_value
+
+            elif not state.is_max_node() and child_value < best_value:
+                best_child = child
+                best_value = child_value
+
+        state = best_child
+
+    print(state)
 
 def main():
     """You need to implement the following functions/methods:
@@ -18,7 +40,8 @@ def main():
     min_value(node, alpha, beta):implements the MinMax algorithm with alpha-beta pruning
     """
     empty_board = 3 * '???'
-    state = TicTacToe(empty_board, True)
+    # state = TicTacToe(empty_board, True)
+    state = TicTacToe("oxox?x?o?", False)
     print(state)
     play(state)
 
