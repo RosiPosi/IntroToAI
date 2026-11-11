@@ -63,4 +63,12 @@ class SpamHam:
         :param words: Array of str
         :return: probability that the message is spam (float)
         """
-        # Implement me
+        for word in words:
+            value = self.spam.get(word, SMALL_NUMBER)
+            prob = value/75268
+            print(f"{word} = {prob}")
+        print("HAM:::::")
+        for word in words:
+            value = self.ham.get(word, SMALL_NUMBER)
+            prob = value/290673
+            print(f"{word} = {prob}")
