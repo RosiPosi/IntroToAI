@@ -1,4 +1,5 @@
 import os
+import math
 
 SMALL_NUMBER = 0.00001
 
@@ -63,12 +64,20 @@ class SpamHam:
         :param words: Array of str
         :return: probability that the message is spam (float)
         """
+        spamprob = 1
+        hamprob = 1
         for word in words:
             value = self.spam.get(word, SMALL_NUMBER)
             prob = value/75268
-            print(f"{word} = {prob}")
-        print("HAM:::::")
+            spamprob += math.log(prob)
+            # print(f"{word} = {prob}")
+
         for word in words:
             value = self.ham.get(word, SMALL_NUMBER)
             prob = value/290673
-            print(f"{word} = {prob}")
+            hamprob += math.log(prob)
+            # print(f"{word} = {prob}")
+
+        naive = spamprob - hamprob
+        probability = 1 / (1 + math.exp(-naive))
+        return probability
