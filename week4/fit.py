@@ -19,7 +19,7 @@ clf = MLPClassifier(
     hidden_layer_sizes=(50, 50),   # one hidden layer, 40 neurons
     max_iter=50,
     solver="sgd",
-    learning_rate_init=0.2,
+    learning_rate_init=0.01,
     random_state=1,
 )
 clf.fit(X_train, y_train)
@@ -39,3 +39,5 @@ print("Validation accuracy:", clf.score(X_val, y_val))
 
 # I chose 50 for both hidden layer sizes and max liter and received the highest accuracy so far:
 # 0.941875
+# Learning rate 0.8: Validation accuracy: 0.101875
+# Learning rate 0.01: Validation accuracy: 0.93125
